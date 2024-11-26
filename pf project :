@@ -5,20 +5,6 @@
 #include <windows.h>
 #include <conio.h>
 #include <ctype.h>
-struct database {
-	char f_name[50];
-	char l_name[50];
-	char address[200];
-	char phone_no[20];
-	char cnic[15];
-	char email[100];
-	int day, month, year;
-	long int balance_amount;
-	long long int account_no;
-	int pin, verify_pin;
-}customer[200];
-
-int main(){
 	long long int min=9999999999999999, max=99999999999999999;
 	int i=0,y, choice, login_pin, choose_account, wrong_pin=0;
 	static int customer_count=0;
@@ -33,6 +19,164 @@ int main(){
 	int npin, cpin, npin_verify, jjj=4;
 	FILE *fp;
 	time_t t;
+struct database {
+	char f_name[50];
+	char l_name[50];
+	char address[200];
+	char phone_no[20];
+	char cnic[15];
+	char email[100];
+	int day, month, year;
+	long int balance_amount;
+	long long int account_no;
+	int pin, verify_pin;
+}customer[200];
+
+void withdraw(struct database *D)
+{
+	system("cls");
+				int withdraw_amount;
+				printf("\t\t\t\t\tHow much ammount you want to withdraw: ");
+				scanf("%ld",&withdraw_amount);
+			
+				if(withdraw_amount>D[choose_account].balance_amount){
+					printf("\n\n\t\t\t\t\t\"You have insufficent Balance\"");
+				}
+				else{
+					D[choose_account].balance_amount = D[choose_account].balance_amount - withdraw_amount;
+					printf("\n\t\t\t\t\tRemaining Balance : %ld", customer[choose_account].balance_amount);
+				}
+}
+
+void  transferfund(FILE *fp){
+		system("cls");
+				fflush(stdin);
+				printf("\t\t\t\t\tReceiver Name: ");
+				gets(receiver_name);
+				printf("\t\t\t\t\tReceiver Account number: ");
+				scanf("%lld", &Raccount_number);
+				printf("\n\n");
+				printf("\t\t\t\t\tEnter the amount you want to transfer: ");
+				scanf("%ld", &transferamount);
+				customer[choose_account].balance_amount=customer[choose_account].balance_amount - transferamount;
+				fscanf(fp, "%ld", &transferamount);
+				printf("\n\n\t\t\t\t\t!!!Amount transfered Successfully!!!\n\t\t\t\t\tCurrent balance is: Rs %ld", customer[choose_account].balance_amount);
+				
+}
+void deposit(){
+	
+		system("cls");
+				printf("\t\t\t\t\tEnter your amount you want to deposit in your account: ");
+				scanf("%ld", &deposit_cash);
+				customer[choose_account].balance_amount = customer[choose_account].balance_amount + deposit_cash;
+				printf("\n\t\t\t\t\t!!!Cash Deposited Successfully!!!");
+				printf("\n\n\t\t\t\t\tYour new balance is: %ld", customer[choose_account].balance_amount);
+}
+void billpayment(){
+	printf("\n\n\t(1) For electricity  \n\t(2) For Gas \n\t(3) For Internet \n\t(4) For Telephone");
+				printf("\n\n\tEnter the choice: ");
+				scanf("%d",&choice_ser);
+				switch(choice_ser){
+					case 1:
+						system("cls");
+						printf("\t\t\t\t\tEnter the Reference Number: ");
+						scanf("%d",&r);
+						srand(time(NULL));
+						bill = 	rand() % (max_bill-min_bill)+min_bill;
+						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
+						if(bill>customer[choose_account].balance_amount){
+							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+						}
+						else{
+							char wish;
+							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+							scanf(" %c",&wish);
+							if(wish=='Y' || wish=='y'){
+								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
+							}
+							else{
+								printf("\n\t\t\t\t\tTHANK YOU !!");
+							}
+						}	
+						break;
+					case 2:
+						system("cls");
+						printf("\t\t\t\t\tEnter the Reference Number: ");
+						scanf("%d",&r);
+						srand(time(NULL));
+						bill= 	rand() % (max_bill-min_bill)+min_bill;
+						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
+						if(bill>customer[choose_account].balance_amount){
+							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+						}
+						else{
+							char wish;
+							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+							scanf(" %c",&wish);
+							if(wish=='Y' || wish=='y'){
+								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
+							}
+							else{
+								printf("\n\t\t\t\t\tTHANK YOU !!");
+							}
+						}
+						break;
+					case 3:
+						system("cls");
+						printf("\t\t\t\t\tEnter the Reference Number: ");
+						scanf("%d",&r);
+						srand(time(NULL));
+						bill= 	rand() % (max_bill-min_bill)+min_bill;
+						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
+						if(bill>customer[choose_account].balance_amount){
+							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+						}
+						else{
+							char wish;
+							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+							scanf(" %c",&wish);
+							if(wish=='Y' || wish=='y'){
+								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
+							}
+							else{
+								printf("\n\t\t\t\t\tTHANK YOU !!");
+							}		
+						}
+						break;
+					case 4:
+						system("cls");
+						printf("\t\t\t\t\tEnter the Reference Number: ");
+						scanf("%d",&r);
+						srand(time(NULL));
+						bill= 	rand() % (max_bill-min_bill)+min_bill;
+						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
+						if(bill>customer[choose_account].balance_amount){
+							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+						}
+						else{
+							char wish;
+							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+							scanf(" %c",&wish);
+							if(wish=='Y' || wish=='y'){
+								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
+							}
+							else{
+								printf("\n\t\t\t\t\tTHANK YOU !!");
+							}			
+						}
+						break;
+					default:
+						printf("\n\t\t\t\t\tYou currently have no bill due");
+						break;
+					}
+}
+
+int main(){
+
 
 	printf("\n\n\t\t\t\t\t      WELCOME TO InnovaBank\n");
 
@@ -198,9 +342,28 @@ exit(0);
  	}
 
 MyServices:
-return 0;	
+while(options!=8){
+		printf("\n\n\n\t\t\t\t\t(1) Withdraw Cash\t\t(5) Change your pin\n\t\t\t\t\t(2) Transfer fund\t\t(6) Check account balance\n");
+		printf("\t\t\t\t\t(3) Deposit Money\t\t(7) Receipt\n\t\t\t\t\t(4) Bill Payments\t\t(8) Log Out\n\n");
+	
+		printf("\n\nEnter your choice: ");
+		scanf("%d", &options);
+		switch(options){
+			case 1:
+				withdraw(customer);
+				break;
+			case 2:
+		transferfund(fp);
+		break;
+			case 3:
+			deposit();
+				break;
+			case 4:
+		billpayment();
+				break;
 }
 
+}}
 
 
 
