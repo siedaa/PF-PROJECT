@@ -7,465 +7,518 @@
 #include <ctype.h>
 
 // DECLARING VARIABLES
-	long long int min=9999999999999999, max=99999999999999999;
-	int i=0,y, choice, login_pin, choose_account, wrong_pin=0;
-	static int customer_count=0;
-	int options;
-	char kk;
-	long int withdraw_amount=0;
-	char receiver_name[50];
-	long long int Raccount_number;
-	long int transferamount=0, amount=0, deposit_cash=0, bill=0;
-	int choice_ser, r;
-	long int  max_bill=5000 , min_bill= 1000;	
-	int npin, cpin, npin_verify, tries=4;
-	FILE *fp;
-	time_t t;
+long long int min = 9999999999999999, max = 99999999999999999;
+int i = 0, y, choice, login_pin, choose_account, wrong_pin = 0;
+static int customer_count = 0;
+int options;
+char kk;
+long int withdraw_amount = 0;
+char receiver_name[50];
+long long int Raccount_number;
+long int transferamount = 0, amount = 0, deposit_cash = 0, bill = 0;
+int choice_ser, r;
+long int max_bill = 5000, min_bill = 1000;
+int npin, cpin, npin_verify, tries = 4;
+FILE *fp;
+time_t t;
 // STRUCTURE
-struct database {
-	char f_name[50];
-	char l_name[50];
-	char address[200];
-	char phone_no[20];
-	char cnic[15];
-	char email[100];
-	int day, month, year;
-	long int balance_amount;
-	long long int account_no;
-	int pin, verify_pin;
-}customer[200];
+struct database
+{
+    char f_name[50];
+    char l_name[50];
+    char address[200];
+    char phone_no[20];
+    char cnic[15];
+    char email[100];
+    int day, month, year;
+    long int balance_amount;
+    long long int account_no;
+    int pin, verify_pin;
+} customer[200];
 
 // FUNCTIONS
 void withdraw(struct database *D)
 {
-	system("cls");
-				int withdraw_amount;
-				printf("\t\t\t\t\tHow much ammount you want to withdraw: ");
-				scanf("%ld",&withdraw_amount);
-			
-				if(withdraw_amount>D[choose_account].balance_amount){
-					printf("\n\n\t\t\t\t\t\"You have insufficent Balance\"");
-				}
-				else{
-					D[choose_account].balance_amount = D[choose_account].balance_amount - withdraw_amount;
-					printf("\n\t\t\t\t\tRemaining Balance : %ld", customer[choose_account].balance_amount);
-				}
+    system("cls");
+    int withdraw_amount;
+    printf("\t\t\t\t\tHow much ammount you want to withdraw: ");
+    scanf("%ld", &withdraw_amount);
+
+    if (withdraw_amount > D[choose_account].balance_amount)
+    {
+        printf("\n\n\t\t\t\t\t\"You have insufficent Balance\"");
+    }
+    else
+    {
+        D[choose_account].balance_amount = D[choose_account].balance_amount - withdraw_amount;
+        printf("\n\t\t\t\t\tRemaining Balance : %ld", customer[choose_account].balance_amount);
+    }
 }
 
-void  transferfund(FILE *fp){
-		system("cls");
-				fflush(stdin);
-				printf("\t\t\t\t\tReceiver Name: ");
-				gets(receiver_name);
-				printf("\t\t\t\t\tReceiver Account number: ");
-				scanf("%lld", &Raccount_number);
-				printf("\n\n");
-				printf("\t\t\t\t\tEnter the amount you want to transfer: ");
-				scanf("%ld", &transferamount);
-				customer[choose_account].balance_amount=customer[choose_account].balance_amount - transferamount;
-				fscanf(fp, "%ld", &transferamount);
-				printf("\n\n\t\t\t\t\t!!!Amount transfered Successfully!!!\n\t\t\t\t\tCurrent balance is: Rs %ld", customer[choose_account].balance_amount);
-				
+void transferfund(FILE *fp)
+{
+    system("cls");
+    fflush(stdin);
+    printf("\t\t\t\t\tReceiver Name: ");
+    gets(receiver_name);
+    printf("\t\t\t\t\tReceiver Account number: ");
+    scanf("%lld", &Raccount_number);
+    printf("\n\n");
+    printf("\t\t\t\t\tEnter the amount you want to transfer: ");
+    scanf("%ld", &transferamount);
+    customer[choose_account].balance_amount = customer[choose_account].balance_amount - transferamount;
+    fscanf(fp, "%ld", &transferamount);
+    printf("\n\n\t\t\t\t\t!!!Amount transfered Successfully!!!\n\t\t\t\t\tCurrent balance is: Rs %ld", customer[choose_account].balance_amount);
 }
-void deposit(){
-	
-		system("cls");
-				printf("\t\t\t\t\tEnter your amount you want to deposit in your account: ");
-				scanf("%ld", &deposit_cash);
-				customer[choose_account].balance_amount = customer[choose_account].balance_amount + deposit_cash;
-				printf("\n\t\t\t\t\t!!!Cash Deposited Successfully!!!");
-				printf("\n\n\t\t\t\t\tYour new balance is: %ld", customer[choose_account].balance_amount);
+void deposit()
+{
+
+    system("cls");
+    printf("\t\t\t\t\tEnter your amount you want to deposit in your account: ");
+    scanf("%ld", &deposit_cash);
+    customer[choose_account].balance_amount = customer[choose_account].balance_amount + deposit_cash;
+    printf("\n\t\t\t\t\t!!!Cash Deposited Successfully!!!");
+    printf("\n\n\t\t\t\t\tYour new balance is: %ld", customer[choose_account].balance_amount);
 }
-void billpayment(){
-	printf("\n\n\t(1) For electricity  \n\t(2) For Gas \n\t(3) For Internet \n\t(4) For Telephone");
-				printf("\n\n\tEnter the choice: ");
-				scanf("%d",&choice_ser);
-				switch(choice_ser){
-					case 1:
-						system("cls");
-						printf("\t\t\t\t\tEnter the Reference Number: ");
-						scanf("%d",&r);
-						srand(time(NULL));
-						bill = 	rand() % (max_bill-min_bill)+min_bill;
-						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
-						if(bill>customer[choose_account].balance_amount){
-							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
-						}
-						else{
-							char wish;
-							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
-							scanf(" %c",&wish);
-							if(wish=='Y' || wish=='y'){
-								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
-								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
-							}
-							else{
-								printf("\n\t\t\t\t\tTHANK YOU !!");
-							}
-						}	
-						break;
-					case 2:
-						system("cls");
-						printf("\t\t\t\t\tEnter the Reference Number: ");
-						scanf("%d",&r);
-						srand(time(NULL));
-						bill= 	rand() % (max_bill-min_bill)+min_bill;
-						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
-						if(bill>customer[choose_account].balance_amount){
-							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
-						}
-						else{
-							char wish;
-							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
-							scanf(" %c",&wish);
-							if(wish=='Y' || wish=='y'){
-								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
-								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
-							}
-							else{
-								printf("\n\t\t\t\t\tTHANK YOU !!");
-							}
-						}
-						break;
-					case 3:
-						system("cls");
-						printf("\t\t\t\t\tEnter the Reference Number: ");
-						scanf("%d",&r);
-						srand(time(NULL));
-						bill= 	rand() % (max_bill-min_bill)+min_bill;
-						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
-						if(bill>customer[choose_account].balance_amount){
-							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
-						}
-						else{
-							char wish;
-							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
-							scanf(" %c",&wish);
-							if(wish=='Y' || wish=='y'){
-								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
-								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
-							}
-							else{
-								printf("\n\t\t\t\t\tTHANK YOU !!");
-							}		
-						}
-						break;
-					case 4:
-						system("cls");
-						printf("\t\t\t\t\tEnter the Reference Number: ");
-						scanf("%d",&r);
-						srand(time(NULL));
-						bill= 	rand() % (max_bill-min_bill)+min_bill;
-						printf("\n\t\t\t\t\tYour Total bill amount %ld is due",bill);
-						if(bill>customer[choose_account].balance_amount){
-							printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
-						}
-						else{
-							char wish;
-							printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
-							scanf(" %c",&wish);
-							if(wish=='Y' || wish=='y'){
-								customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
-								printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);	
-							}
-							else{
-								printf("\n\t\t\t\t\tTHANK YOU !!");
-							}			
-						}
-						break;
-					default:
-						printf("\n\t\t\t\t\tYou currently have no bill due");
-						break;
-					}
-}
-
-
-void changePin(){
-		system("cls");
-					fp=fopen("Database.txt", "a+");
-					if(fp==NULL){
-						printf("\nFile not open/found\n");
-						exit(0);
-					}
-					while(tries!=0){
-						printf("\t\t\t\t\tPlease Enter Your Current PIN Code: ");
-						scanf("%d", &cpin);
-						if(cpin==customer[customer_count].pin){
-							printf("\t\t\t\t\tEnter New PIN Code\t\t:");
-							scanf("%d", &npin);
-							printf("\t\t\t\t\tEnter your New PIN Code again to verify\t:");
-							scanf("%d", &npin_verify);
-							if(npin==npin_verify){
-								customer[customer_count].pin=npin;
-								fscanf(fp, "%d", &customer[customer_count].pin);
-								printf("\n\n\t\t\t\t\tYou Have Successfully Changed Your PIN Code!");
-								break;
-							}
-							else{
-								printf("\n\n\t\t\t\t\tEnter the correct Pin!!!\n\n\n");   
-							}
-						}
-						else{
-							tries--;
-							printf("\n\n\t\t\t\t\tIncorrect PIN Code! Try Again!\n\t\t\t\t\tYou have %d Tries left...", tries);
-							if(tries==0){
-								printf("\n\n\t\t\tYOUR ACCOUNT HAS BEEN BLOCKED FOR 24 HOURS! PLEASE VISIT THE BANK TO RE-OPEN OR VISIT AGAIN AFTER 24 HOURS!");
-							}
-						}
-					}
-				fclose(fp);
-
+void billpayment()
+{
+    printf("\n\n\t(1) For electricity  \n\t(2) For Gas \n\t(3) For Internet \n\t(4) For Telephone");
+    printf("\n\n\tEnter the choice: ");
+    scanf("%d", &choice_ser);
+    switch (choice_ser)
+    {
+    case 1:
+        system("cls");
+        printf("\t\t\t\t\tEnter the Reference Number: ");
+        scanf("%d", &r);
+        srand(time(NULL));
+        bill = rand() % (max_bill - min_bill) + min_bill;
+        printf("\n\t\t\t\t\tYour Total bill amount %ld is due", bill);
+        if (bill > customer[choose_account].balance_amount)
+        {
+            printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+        }
+        else
+        {
+            char wish;
+            printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+            scanf(" %c", &wish);
+            if (wish == 'Y' || wish == 'y')
+            {
+                customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+                printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);
+            }
+            else
+            {
+                printf("\n\t\t\t\t\tTHANK YOU !!");
+            }
+        }
+        break;
+    case 2:
+        system("cls");
+        printf("\t\t\t\t\tEnter the Reference Number: ");
+        scanf("%d", &r);
+        srand(time(NULL));
+        bill = rand() % (max_bill - min_bill) + min_bill;
+        printf("\n\t\t\t\t\tYour Total bill amount %ld is due", bill);
+        if (bill > customer[choose_account].balance_amount)
+        {
+            printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+        }
+        else
+        {
+            char wish;
+            printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+            scanf(" %c", &wish);
+            if (wish == 'Y' || wish == 'y')
+            {
+                customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+                printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);
+            }
+            else
+            {
+                printf("\n\t\t\t\t\tTHANK YOU !!");
+            }
+        }
+        break;
+    case 3:
+        system("cls");
+        printf("\t\t\t\t\tEnter the Reference Number: ");
+        scanf("%d", &r);
+        srand(time(NULL));
+        bill = rand() % (max_bill - min_bill) + min_bill;
+        printf("\n\t\t\t\t\tYour Total bill amount %ld is due", bill);
+        if (bill > customer[choose_account].balance_amount)
+        {
+            printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+        }
+        else
+        {
+            char wish;
+            printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+            scanf(" %c", &wish);
+            if (wish == 'Y' || wish == 'y')
+            {
+                customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+                printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);
+            }
+            else
+            {
+                printf("\n\t\t\t\t\tTHANK YOU !!");
+            }
+        }
+        break;
+    case 4:
+        system("cls");
+        printf("\t\t\t\t\tEnter the Reference Number: ");
+        scanf("%d", &r);
+        srand(time(NULL));
+        bill = rand() % (max_bill - min_bill) + min_bill;
+        printf("\n\t\t\t\t\tYour Total bill amount %ld is due", bill);
+        if (bill > customer[choose_account].balance_amount)
+        {
+            printf("\n\t\t\t\t\tYou have insufficient balance to pay your bill.");
+        }
+        else
+        {
+            char wish;
+            printf("\n\t\t\t\t\tDo you wish to pay the bill (Y/N) : ");
+            scanf(" %c", &wish);
+            if (wish == 'Y' || wish == 'y')
+            {
+                customer[choose_account].balance_amount = customer[choose_account].balance_amount - bill;
+                printf("\n\t\t\t\t\tYour Current Balance is: %ld", customer[choose_account].balance_amount);
+            }
+            else
+            {
+                printf("\n\t\t\t\t\tTHANK YOU !!");
+            }
+        }
+        break;
+    default:
+        printf("\n\t\t\t\t\tYou currently have no bill due");
+        break;
+    }
 }
 
-void checkBalance(){
-	printf("\n\n\t\t\t\t\tYour current account balance is: %ld\n\n", customer[choose_account].balance_amount);
-
+void changePin()
+{
+    system("cls");
+    fp = fopen("Database.txt", "r+");
+    if (fp == NULL)
+    {
+        printf("\nFile not open/found\n");
+        exit(0);
+    }
+    while (tries != 0)
+    {
+        printf("\t\t\t\t\tPlease Enter Your Current PIN Code: ");
+        scanf("%d", &cpin);
+        if (cpin == customer[customer_count].pin)
+        {
+            printf("\t\t\t\t\tEnter New PIN Code\t\t:");
+            scanf("%d", &npin);
+            printf("\t\t\t\t\tEnter your New PIN Code again to verify\t:");
+            scanf("%d", &npin_verify);
+            if (npin == npin_verify)
+            {
+                customer[customer_count].pin = npin;
+                fscanf(fp, "%d", &customer[customer_count].pin);
+                printf("\n\n\t\t\t\t\tYou Have Successfully Changed Your PIN Code!");
+                break;
+            }
+            else
+            {
+                printf("\n\n\t\t\t\t\tEnter the correct Pin!!!\n\n\n");
+            }
+        }
+        else
+        {
+            tries--;
+            printf("\n\n\t\t\t\t\tIncorrect PIN Code! Try Again!\n\t\t\t\t\tYou have %d Tries left...", tries);
+            if (tries == 0)
+            {
+                printf("\n\n\t\t\tYOUR ACCOUNT HAS BEEN BLOCKED FOR 24 HOURS! PLEASE VISIT THE BANK TO RE-OPEN OR VISIT AGAIN AFTER 24 HOURS!");
+            }
+        }
+    }
+    fclose(fp);
 }
 
-void receipt(){
-		system("cls");
-					time(&t);
-					t = time(NULL);
-   					struct tm tm = *localtime(&t);
-					printf("\n\n\t\t\t\t||\t--------------------------------------\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
-					printf("\t\t\t\t||\t\tSECURE BANK SYSTEM\t\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
-					printf("\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\t--------------------------------------\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
-					printf("\t\t\t\t||\tDate Time: %d-%d-%d\t%d:%d:%d", tm.tm_mday, tm.tm_mon+1, tm.tm_year+1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
-					printf("\t\t||\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tFull Name\t:%s %s", customer[choose_account].f_name, customer[customer_count].l_name);
-					printf("\t\t||\n\t\t\t\t||\tAccount Number\t:%lld\t||", customer[choose_account].account_no);
-					printf("\n\t\t\t\t||\tDeposited Amount:%ld\t\t\t||", deposit_cash);
-					printf("\n\t\t\t\t||\tWithdrawn Amount:%ld\t\t\t||", withdraw_amount);
-					printf("\n\t\t\t\t||\tTransfer Amount\t:%ld\t\t\t||", transferamount);
-					printf("\n\t\t\t\t||\tCurrent Balance :%ld\t\t\t||", customer[choose_account].balance_amount);
-					printf("\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tThankyou for Visitng! Have a great day! ||");
-
+void checkBalance()
+{
+    printf("\n\n\t\t\t\t\tYour current account balance is: %ld\n\n", customer[choose_account].balance_amount);
 }
 
-void logOut(){
-		system("cls");
-				printf("\n\n\n\n\t\t\t\t\tPlease wait! Logging out...\n\n\n\n");
-				for(i=0 ; i<200000000 ; i++){
-					srand(time(NULL));
-				}
-				system("cls");
-				printf("\n\n\n\n\t\t\t\t\tAccount Logged out successfully!\n\n\n\n");
-				for(i=0 ; i<200000000 ; i++){
-					srand(time(NULL));
-				}
+void receipt()
+{
+    system("cls");
+    time(&t);
+    t = time(NULL);
+    struct tm tm = *localtime(&t);
+    printf("\n\n\t\t\t\t||\t--------------------------------------\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
+    printf("\t\t\t\t||\t\tINNOVA BANK System\t\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
+    printf("\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\t--------------------------------------\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
+    printf("\t\t\t\t||\tDate Time: %d-%d-%d\t%d:%d:%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    printf("\t||\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tFull Name  \t:%s %s", customer[choose_account].f_name, customer[customer_count].l_name);
+    printf("\t\t||\n\t\t\t\t||\tAccount Number\t:%lld\t||", customer[choose_account].account_no);
+    printf("\n\t\t\t\t||\tDeposited Amount:%ld\t\t\t||", deposit_cash);
+    printf("\n\t\t\t\t||\tWithdrawn Amount:%ld\t\t\t||", withdraw_amount);
+    printf("\n\t\t\t\t||\tTransfer Amount\t:%ld\t\t\t||", transferamount);
+    printf("\n\t\t\t\t||\tCurrent Balance :%ld\t\t\t||", customer[choose_account].balance_amount);
+    printf("\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tThankyou for Visitng! Have a great day! ||");
+}
 
+void logOut()
+{
+    system("cls");
+    printf("\n\n\n\n\t\t\t\t\tPlease wait! Logging out...\n\n\n\n");
+    for (i = 0; i < 2000000; i++)
+    {
+        srand(time(NULL));
+    }
+    system("cls");
+    printf("\n\n\n\n\t\t\t\t\tAccount Logged out successfully!\n\n\n\n");
+    for (i = 0; i < 2000000; i++)
+    {
+        srand(time(NULL));
+    }
 }
 
 // MAIN STARTS HERE
 
+int main()
+{
 
-int main(){
+    printf("\n\n\t\t\t\t\t      WELCOME TO InnovaBank\n");
 
+    printf("\n\n\t\t\t\t\t  How would you like to proceed?\n\n");
+    printf("\t\t\t\t\t      1. Create new account\n");
+    printf("\t\t\t\t\t      2. Login to your account\n");
+    printf("\n\n\t\t\t\t\t        Enter your choice: ");
+    scanf("%d", &choice);
+    system("cls");
 
-	printf("\n\n\t\t\t\t\t      WELCOME TO InnovaBank\n");
+    // SWITCH STATEMENT
+    switch (choice)
+    {
+    case 1:
+        fp = fopen("Database.txt", "a+");
+        if (fp == NULL)
+        {
+            printf("\nFile not open/found\n");
+            exit(0);
+        }
+        fflush(stdin);
+        printf("\n\n\t\t\t\t\tEnter Your First Name :\t");
+        gets(customer[customer_count].f_name);
+        fflush(stdin);
+        printf("\t\t\t\t\tEnter You Last Name :\t");
+        gets(customer[customer_count].l_name);
+        fflush(stdin);
+        printf("\t\t\t\t\tEnter Your Address :\t");
+        gets(customer[customer_count].address);
+        fflush(stdin);
+        do
+        {
+            printf("\t\t\t\t\tEnter Your Phone Number (11 digits): ");
+            int digit_count = 0;
 
-	printf("\n\n\t\t\t\t\t  How would you like to proceed?\n\n");
-	printf("\t\t\t\t\t      1. Create new account\n");
-	printf("\t\t\t\t\t      2. Login to your account\n");
-	printf("\n\n\t\t\t\t\t        Enter your choice: ");
-	scanf("%d", &choice);
-	system("cls");
+            for (i = 0; i < 12; i++)
+            {
+                if (i == 4)
+                {
+                    printf("-");                                // Display the hyphen
+                    customer[customer_count].phone_no[i] = '-'; // Insert the hyphen without reading input
+                }
+                else
+                {
+                    customer[customer_count].phone_no[i] = getche(); // Read character
+                    if (isdigit(customer[customer_count].phone_no[i]))
+                    {                  // is digit--> ctype.h
+                        digit_count++; // Count valid digits
+                    }
+                    else
+                    {
+                        // If input is not a digit, reset and retry
+                        printf("\nInvalid input. Please enter digits only.\n");
+                        break;
+                    }
+                }
+            }
 
-// SWITCH STATEMENT
-	switch(choice){
-		case 1:
-			fp=fopen("Database.bin", "a");
-			if(fp==NULL){
-				printf("\nFile not open/found\n");
-				exit(0);
-			}
-			fflush(stdin);
-			printf("\n\n\t\t\t\t\tEnter Your First Name :\t");
-			gets(customer[customer_count].f_name);
-			fflush(stdin);
-			printf("\t\t\t\t\tEnter You Last Name :\t");
-			gets(customer[customer_count].l_name);
-			fflush(stdin);
-			printf("\t\t\t\t\tEnter Your Address :\t");
-			gets(customer[customer_count].address);
-		fflush(stdin);
-do {
-    printf("\t\t\t\t\tEnter Your Phone Number (11 digits): ");
-    int digit_count = 0;
+            // Ensure the loop is valid only if 11 digits are entered
+            if (digit_count == 11)
+            {
+                customer[customer_count].phone_no[12] = '\0'; // Null-terminate the string
+                break;                                        // Valid phone number entered
+            }
+            else
+            {
+                printf("\nInvalid phone number. Please enter exactly 11 digits.\n");
+            }
+        } while (1);
+        fflush(stdin);
 
-    for (i = 0; i < 12; i++) {
-        if (i == 4) {
-            printf("-"); // Display the hyphen
-            customer[customer_count].phone_no[i] = '-'; // Insert the hyphen without reading input
-        } else {
-            customer[customer_count].phone_no[i] = getche(); // Read character
-            if (isdigit(customer[customer_count].phone_no[i])) {                           // is digit--> ctype.h
-			                digit_count++; // Count valid digits
-            } else {
-                // If input is not a digit, reset and retry
-                printf("\nInvalid input. Please enter digits only.\n");
-                break;
+        printf("\n\t\t\t\t\tEnter Your CNIC Number (xxxxx-xxxxxxx-x):");
+        for (i = 0; i < 15; i++)
+        {
+            if (i == 5 || i == 13)
+            {
+                printf("-");
+                customer[customer_count].cnic[i] = '-';
+            }
+            else
+            {
+                customer[customer_count].cnic[i] = getche();
             }
         }
-    }
+        fflush(stdin);
+        printf("\n\t\t\t\t\tEnter Your Email \t\t\t:");
+        gets(customer[customer_count].email);
+        printf("\t\t\t\t\tEnter Date of Birth (dd-mm-yyyy) \t:");
+        scanf("%d%c%d%c%d", &customer[customer_count].day, &kk, &customer[customer_count].month, &kk, &customer[customer_count].year);
+        y = 2024 - customer[customer_count].year;
+        if (y < 18)
+        {
+            printf("\n\n\t\t\t\t\tCustomer is under 18! Execute the program again...\n");
+            exit(0);
+        }
+        printf("\t\t\t\t\tEnter The First Deposit Amount \t\t:");
+        scanf("%ld", &customer[customer_count].balance_amount);
+        printf("\n\n\n\t\t\t\t\tPlease Wait! Automated Account number is being generated!\n\n\n");
 
-    // Ensure the loop is valid only if 11 digits are entered
-    if (digit_count == 11) {
-        customer[customer_count].phone_no[12] = '\0'; // Null-terminate the string
-        break; // Valid phone number entered
-    } else {
-        printf("\nInvalid phone number. Please enter exactly 11 digits.\n");
-    }
-} while (1);
-fflush(stdin);
+        // Seed the random number generator once
+        srand(time(NULL));
 
+        // Generate a single random account number
+        customer[customer_count].account_no = (long long int)rand() % (max - min + 1) + min;
 
-			printf("\n\t\t\t\t\tEnter Your CNIC Number (xxxxx-xxxxxxx-x):");
-			for(i=0 ; i<15 ; i++){
-				if(i==5 || i==13){
-					printf("-");
-					customer[customer_count].cnic[i]='-';
-				}
-				else{
-					customer[customer_count].cnic[i] = getche();
-				}
-			}
-			fflush(stdin);
-			printf("\n\t\t\t\t\tEnter Your Email \t\t\t:");
-			gets(customer[customer_count].email);
-			printf("\t\t\t\t\tEnter Date of Birth (dd-mm-yyyy) \t:");
-			scanf("%d%c%d%c%d",&customer[customer_count].day,&kk,&customer[customer_count].month,&kk,&customer[customer_count].year);
-			y = 2024 - customer[customer_count].year;
-			if(y<18){
-				printf("\n\n\t\t\t\t\tCustomer is under 18! Execute the program again...\n");
-				exit(0);
-			}
-			printf("\t\t\t\t\tEnter The First Deposit Amount \t\t:");
-			scanf("%ld",&customer[customer_count].balance_amount);
-			printf("\n\n\n\t\t\t\t\tPlease Wait! Automated Account number is being generated!\n\n\n");
-		 
+        // Simulate a delay to mimic the original loop effect
+        Sleep(2000); // 2000 milliseconds = 2 seconds
 
-            // Seed the random number generator once
-            srand(time(NULL));
+        system("cls");
 
-            // Generate a single random account number
-            customer[customer_count].account_no = (long long int)rand() % (max - min + 1) + min;
+        // Output the generated account number
 
-            // Simulate a delay to mimic the original loop effect
-            Sleep(2000); // 2000 milliseconds = 2 seconds
-
-            system("cls");
-
-             // Output the generated account number
-           
-			printf("\t\t\t\t\tYour Account Number is: %lld\n", customer[customer_count].account_no);
-			// fscanf(fp, "%lld", &customer[customer_count].account_no);
-			Pin_Check:
-			do {
+        printf("\t\t\t\t\tYour Account Number is: %lld\n", customer[customer_count].account_no);
+    // fscanf(fp, "%lld", &customer[customer_count].account_no);
+    Pin_Check:
+        do
+        {
             printf("\t\t\t\t\tEnter your PIN (4-digit number): ");
             scanf("%d", &customer[customer_count].pin);
             printf("\t\t\t\t\tEnter your PIN again to verify: ");
             scanf("%d", &customer[customer_count].verify_pin);
 
-            if (customer[customer_count].pin == customer[customer_count].verify_pin) {
-            printf("\n\n\t\t\t\t\tThank you! Your Account has been successfully created.\n\n");
-            break; // Exit the loop if PINs match
-            } else {
-            printf("\n\n\t\t\t\t\tPINs do not match. Please try again.\n\n");
+            if (customer[customer_count].pin == customer[customer_count].verify_pin)
+            {
+                printf("\n\n\t\t\t\t\tThank you! Your Account has been successfully created.\n\n");
+                break; // Exit the loop if PINs match
             }
-            } while (1);
+            else
+            {
+                printf("\n\n\t\t\t\t\tPINs do not match. Please try again.\n\n");
+            }
+        } while (1);
 
-			
-			fwrite(&customer[customer_count], sizeof(struct database), 1, fp);
-			
-     		customer_count++;
-			if(fwrite != 0){
-		        printf("\t\t\t\t\tContents to file written successfully!\n");
-			}
-		    else{
-		        printf("\t\t\t\t\tError writing File!\n");
-			}
-			fclose(fp);
-			break;
-			
-		case 2: 
+        fwrite(&customer[customer_count], sizeof(struct database), 1, fp);
 
-			fp=fopen("Database.bin", "r");
-			if(fp==NULL){
-				printf("\nFile not open/found\n");
-				exit(0);
-			}
-			while(fread(&customer[customer_count], sizeof(struct database), 1, fp)){
-				printf("\n\n\t\t\t\t\t(%d) %lld", i, customer[customer_count].account_no);
-				
-				i++;
-			}
-					printf("\n\n");
-			printf("\n\t\t\t\t\tChoose your Account Number: ");
-			scanf("%d", &choose_account);
-                 if (choose_account < 0 || choose_account > customer_count) {
+        customer_count++;
+        if (fwrite != 0)
+        {
+            printf("\t\t\t\t\tContents to file written successfully!\n");
+        }
+        else
+        {
+            printf("\t\t\t\t\tError writing File!\n");
+        }
+        fclose(fp);
+        break;
+
+    case 2:
+
+        fp = fopen("Database.txt", "r+");
+        if (fp == NULL)
+        {
+            printf("\nFile not open/found\n");
+            exit(0);
+        }
+        while (fread(&customer[customer_count], sizeof(struct database), 1, fp))
+        {
+            printf("\n\n\t\t\t\t\t(%d) %lld", i, customer[customer_count].account_no);
+
+            i++;
+        }
+        printf("\n\n");
+        printf("\n\t\t\t\t\tChoose your Account Number: ");
+        scanf("%d", &choose_account);
+        if (choose_account < 0 || choose_account > customer_count)
+        {
             printf("\n\n\t\t\t\t\tInvalid account number selected. Exiting...\n");
             exit(0);
         }
-            Again_pin:
-            wrong_pin = 0; // Reset wrong attempts counter
-            while (wrong_pin < 3) {
+    Again_pin:
+        wrong_pin = 0; // Reset wrong attempts counter
+        while (wrong_pin < 3)
+        {
             printf("\n\t\t\t\t\tEnter your PIN for this account: ");
             scanf("%d", &login_pin);
 
-            if (login_pin == customer[choose_account].pin) {
-             printf("\n\n\t\t\t\t\tLogin successful! Proceeding to services...\n");
-         goto MyServices;
-    } else {
-        wrong_pin++;
-        printf("\n\t\t\t\t\tIncorrect PIN. Attempts left: %d\n", 3 - wrong_pin);
-    }
-}
+            if (login_pin == customer[choose_account].pin)
+            {
+                printf("\n\n\t\t\t\t\tLogin successful! Proceeding to services...\n");
+                goto MyServices;
+            }
+            else
+            {
+                wrong_pin++;
+                printf("\n\t\t\t\t\tIncorrect PIN. Attempts left: %d\n", 3 - wrong_pin);
+            }
+        }
 
-printf("\n\n\t\t\tYOUR ACCOUNT HAS BEEN BLOCKED FOR 24 HOURS! PLEASE VISIT THE BANK TO RE-OPEN OR TRY AGAIN AFTER 24 HOURS.\n");
-exit(0);
-		
- 	}
+        printf("\n\n\t\t\tYOUR ACCOUNT HAS BEEN BLOCKED FOR 24 HOURS! PLEASE VISIT THE BANK TO RE-OPEN OR TRY AGAIN AFTER 24 HOURS.\n");
+        exit(0);
+    }
 
 MyServices:
-while(options!=8){
-		printf("\n\n\n\t\t\t\t\t(1) Withdraw Cash\t\t(5) Change your pin\n\t\t\t\t\t(2) Transfer fund\t\t(6) Check account balance\n");
-		printf("\t\t\t\t\t(3) Deposit Money\t\t(7) Receipt\n\t\t\t\t\t(4) Bill Payments\t\t(8) Log Out\n\n");
-	
-		printf("\n\nEnter your choice: ");
-		scanf("%d", &options);
-		switch(options){
-			case 1:
-				withdraw(customer);
-				break;
-			case 2:
-		transferfund(fp);
-		break;
-			case 3:
-			deposit();
-				break;
-			case 4:
-		billpayment();
-				break;
+    while (options != 8)
+    {
+        printf("\n\n\n\t\t\t\t\t(1) Withdraw Cash\t\t(5) Change your pin\n\t\t\t\t\t(2) Transfer fund\t\t(6) Check account balance\n");
+        printf("\t\t\t\t\t(3) Deposit Money\t\t(7) Receipt\n\t\t\t\t\t(4) Bill Payments\t\t(8) Log Out\n\n");
 
-			case 5:	
-			changePin();
-				break;
-		
-			case 6:
-			checkBalance();
-				break; 
-			
-			case 7:
-			receipt();
-				break;
-				
-			
-			case 8:
-			logOut();
-				break;
+        printf("\n\nEnter your choice: ");
+        scanf("%d", &options);
+        switch (options)
+        {
+        case 1:
+            withdraw(customer);
+            break;
+        case 2:
+            transferfund(fp);
+            break;
+        case 3:
+            deposit();
+            break;
+        case 4:
+            billpayment();
+            break;
+
+        case 5:
+            changePin();
+            break;
+
+        case 6:
+            checkBalance();
+            break;
+
+        case 7:
+            receipt();
+            break;
+
+        case 8:
+            logOut();
+            break;
+        }
+    }
 }
-
-}}
-
-
-
