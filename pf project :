@@ -214,7 +214,7 @@ void changePin()
     {
         printf("\t\t\t\t\tPlease Enter Your Current PIN Code: ");
         scanf("%d", &cpin);
-        if (cpin == customer[customer_count].pin)
+        if (cpin == customer[choose_account].pin)
         {
             printf("\t\t\t\t\tEnter New PIN Code\t\t:");
             scanf("%d", &npin);
@@ -414,6 +414,7 @@ int main()
             if (customer[customer_count].pin == customer[customer_count].verify_pin)
             {
                 printf("\n\n\t\t\t\t\tThank you! Your Account has been successfully created.\n\n");
+                 
                 break; // Exit the loop if PINs match
             }
             else
@@ -423,8 +424,8 @@ int main()
         } while (1);
 
         fwrite(&customer[customer_count], sizeof(struct database), 1, fp);
-
-        customer_count++;
+ customer_count++;
+      
         if (fwrite != 0)
         {
             printf("\t\t\t\t\tContents to file written successfully!\n");
@@ -446,9 +447,9 @@ int main()
         }
         while (fread(&customer[customer_count], sizeof(struct database), 1, fp))
         {
-            printf("\n\n\t\t\t\t\t(%d) %lld", i, customer[customer_count].account_no);
+            printf("\n\n\t\t\t\t\t(%d) %lld", customer_count, customer[customer_count].account_no);
 
-            i++;
+            customer_count++;
         }
         printf("\n\n");
         printf("\n\t\t\t\t\tChoose your Account Number: ");
