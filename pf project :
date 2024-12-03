@@ -1,10 +1,10 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
+#include <stdio.h> // for input and output
+#include <time.h>  //date and time , local time
+#include <stdlib.h> // random numbers and exiting 
 #include <string.h>
-#include <windows.h>
-#include <conio.h>
-#include <ctype.h>
+#include <windows.h> // sleep function
+#include <conio.h>  // input output on console and clear the screen of console
+#include <ctype.h> // for boolean value ? isdigit
 
 // DECLARING VARIABLES
 long long int min = 9999999999999999, max = 99999999999999999;
