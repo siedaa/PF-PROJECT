@@ -222,8 +222,8 @@ void changePin()
             scanf("%d", &npin_verify);
             if (npin == npin_verify)
             {
-                customer[customer_count].pin = npin;
-                fscanf(fp, "%d", &customer[customer_count].pin);
+                customer[choose_account].pin = npin;
+                fscanf(fp, "%d", &customer[choose_account].pin);
                 printf("\n\n\t\t\t\t\tYou Have Successfully Changed Your PIN Code!");
                 break;
             }
