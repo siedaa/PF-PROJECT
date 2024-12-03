@@ -273,16 +273,12 @@ void logOut()
 {
     system("cls");
     printf("\n\n\n\n\t\t\t\t\tPlease wait! Logging out...\n\n\n\n");
-    for (i = 0; i < 2000000; i++)
-    {
-        srand(time(NULL));
-    }
+   
+Sleep(2000);
     system("cls");
     printf("\n\n\n\n\t\t\t\t\tAccount Logged out successfully!\n\n\n\n");
-    for (i = 0; i < 2000000; i++)
-    {
-        srand(time(NULL));
-    }
+
+Sleep(2000);
 }
 
 // MAIN STARTS HERE
