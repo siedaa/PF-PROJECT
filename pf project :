@@ -260,7 +260,7 @@ void receipt()
     printf("\t\t\t\t||\t\tINNOVA BANK System\t\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
     printf("\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\t--------------------------------------\t||\n\t\t\t\t||\t\t\t\t\t\t||\n");
     printf("\t\t\t\t||\tDate Time: %d-%d-%d\t%d:%d:%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
-    printf("\t||\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tFull Name  \t:%s %s", customer[choose_account].f_name, customer[customer_count].l_name);
+    printf("\t||\n\t\t\t\t||\t\t\t\t\t\t||\n\t\t\t\t||\tFull Name  \t:%s %s", customer[choose_account].f_name, customer[choose_account].l_name);
     printf("\t\t||\n\t\t\t\t||\tAccount Number\t:%lld\t||", customer[choose_account].account_no);
     printf("\n\t\t\t\t||\tDeposited Amount:%ld\t\t\t||", deposit_cash);
     printf("\n\t\t\t\t||\tWithdrawn Amount:%ld\t\t\t||", withdraw_amount);
